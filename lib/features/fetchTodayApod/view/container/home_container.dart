@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nasa_api/features/fetchTodayApod/bloc/apod_today_bloc.dart';
 import 'package:nasa_api/features/fetchTodayApod/bloc/apod_today_event.dart';
 import 'package:nasa_api/features/fetchTodayApod/bloc/apod_today_state.dart';
@@ -19,33 +20,28 @@ class _HomeContainerState extends State<HomeContainer> {
   @override
   void initState() {
     bloc = ApodBloc();
-    bloc.input.add(LoadApodEvent());
     super.initState();
   }
 
   @override
   void dispose() {
-    bloc.input.close();
-
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder(
-      stream: bloc.output,
-      builder: (context, snapshot) {
-        if (snapshot.hasData) {
-          if (snapshot.data is ApodTodayLoadingState ||
-              snapshot.data is ApodTodayInitialState) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.data is ApodTodaySucessState) {
-            return ApodScreen(data: snapshot.data!.apod);
-          } else {
-            return const Center(child: Text('Dados não disponíveis'));
-          }
+    return BlocBuilder(
+      bloc: bloc,
+      builder: (context, state) {
+        if (state is ApodTodayInitialState) {
+          bloc.add(LoadApodEvent());
+          return const Center(child: CircularProgressIndicator());
+        } else if (state is ApodTodayLoadingState) {
+          return const Center(child: CircularProgressIndicator());
+        } else if (state is ApodTodaySucessState) {
+          return ApodScreen(data: state.apod);
         } else {
-          return const Center(child: Text('Dados não disponíveis'));
+          return const Center(child: Text('Erro ao carregar dados'));
         }
       },
     );
