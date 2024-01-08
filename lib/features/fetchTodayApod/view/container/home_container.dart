@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
 import 'package:nasa_api/features/fetchTodayApod/bloc/apod_today_bloc.dart';
 import 'package:nasa_api/features/fetchTodayApod/bloc/apod_today_event.dart';
 import 'package:nasa_api/features/fetchTodayApod/bloc/apod_today_state.dart';
@@ -35,9 +36,15 @@ class _HomeContainerState extends State<HomeContainer> {
       builder: (context, state) {
         if (state is ApodTodayInitialState) {
           bloc.add(LoadApodEvent());
-          return const Center(child: CircularProgressIndicator());
+          if (mounted) {
+            return SplashLoadingScreen();
+          }
+          return const Center(child: Text('Erro ao carregar dados'));
         } else if (state is ApodTodayLoadingState) {
-          return const Center(child: CircularProgressIndicator());
+          if (mounted) {
+            return SplashLoadingScreen();
+          }
+          return const Center(child: Text('Erro ao carregar dados'));
         } else if (state is ApodTodaySucessState) {
           return ApodScreen(data: state.apod);
         } else {
@@ -48,18 +55,29 @@ class _HomeContainerState extends State<HomeContainer> {
   }
 }
 
+class SplashLoadingScreen extends StatefulWidget {
+  const SplashLoadingScreen({
+    super.key,
+  });
 
-// FutureBuilder(
-//       future: widget.repository.getTodayApod(),
-//       builder: (context, snapshot) {
-//         if (snapshot.connectionState == ConnectionState.done) {
-//           if (snapshot.hasData) {
-//             return ApodScreen(data: snapshot.data!);
-//           } else {
-//             return Center(child: Text('Dados não disponíveis'));
-//           }
-//         } else {
-//           return const Center(child: CircularProgressIndicator());
-//         }
-//       },
-//     );
+  @override
+  State<SplashLoadingScreen> createState() => _SplashLoadingScreenState();
+}
+
+class _SplashLoadingScreenState extends State<SplashLoadingScreen> {
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(const Duration(seconds: 4)).then((value) {
+      Navigator.pushReplacementNamed(context, '/');
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+        child: Lottie.asset(
+      'assets/splash_screen.json',
+    ));
+  }
+}

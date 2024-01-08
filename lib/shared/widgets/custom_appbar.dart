@@ -4,9 +4,9 @@ import 'package:nasa_api/features/fetchTodayApod/model/apod.dart';
 import 'package:nasa_api/features/fetchTodayApod/model/apod_repository.dart';
 
 class CustomAppBar extends StatefulWidget {
-  const CustomAppBar({super.key, required this.data});
+  CustomAppBar({super.key, required this.data});
 
-  final ApodModel data;
+  ApodModel data;
 
   @override
   State<CustomAppBar> createState() => _CustomAppBarState();
@@ -14,6 +14,7 @@ class CustomAppBar extends StatefulWidget {
 
 class _CustomAppBarState extends State<CustomAppBar> {
   TextEditingController _controller = TextEditingController();
+
   bool searchActive = false;
   bool isExpanded = false;
   IApodRepository repository = ApodRepository(dio: Dio());
@@ -52,12 +53,9 @@ class _CustomAppBarState extends State<CustomAppBar> {
                     width: 200,
                     child: TextField(
                       onSubmitted: (value) async {
-                        await repository
-                            .getApodByDate(_controller.text.toString())
-                            .then((value) {
-                          print(value.title);
-                        });
-
+                        var newApod = await repository
+                            .getApodByDate(_controller.text.toString());
+                        widget.data = newApod;
                         setState(() {});
                       },
                       controller: _controller,
