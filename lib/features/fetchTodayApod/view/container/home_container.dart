@@ -6,6 +6,7 @@ import 'package:nasa_api/features/fetchTodayApod/bloc/apod_today_event.dart';
 import 'package:nasa_api/features/fetchTodayApod/bloc/apod_today_state.dart';
 import 'package:nasa_api/features/fetchTodayApod/model/apod_repository.dart';
 import 'package:nasa_api/features/fetchTodayApod/view/pages/apod_screen.dart';
+import 'package:nasa_api/features/fetchTodayApod/view/pages/splash/loading_splash_screen.dart';
 
 class HomeContainer extends StatefulWidget {
   const HomeContainer({Key? key, required this.repository}) : super(key: key);
@@ -52,32 +53,5 @@ class _HomeContainerState extends State<HomeContainer> {
         }
       },
     );
-  }
-}
-
-class SplashLoadingScreen extends StatefulWidget {
-  const SplashLoadingScreen({
-    super.key,
-  });
-
-  @override
-  State<SplashLoadingScreen> createState() => _SplashLoadingScreenState();
-}
-
-class _SplashLoadingScreenState extends State<SplashLoadingScreen> {
-  @override
-  void initState() {
-    super.initState();
-    Future.delayed(const Duration(seconds: 4)).then((value) {
-      Navigator.pushReplacementNamed(context, '/');
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-        child: Lottie.asset(
-      'assets/splash_screen.json',
-    ));
   }
 }
