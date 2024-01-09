@@ -6,15 +6,15 @@ import 'package:nasa_api/features/fetchTodayApod/bloc/apod_today_state.dart';
 import 'package:nasa_api/features/fetchTodayApod/model/apod.dart';
 import 'package:nasa_api/features/fetchTodayApod/view/pages/apod_screen.dart';
 
-class FetchDateContainer extends StatefulWidget {
-  const FetchDateContainer({Key? key, required this.apod}) : super(key: key);
+class FetchByDateContainer extends StatefulWidget {
+  const FetchByDateContainer({Key? key, required this.apod}) : super(key: key);
   final ApodModel apod;
 
   @override
-  State<FetchDateContainer> createState() => _FetchDateContainerState();
+  State<FetchByDateContainer> createState() => _FetchByDateContainerState();
 }
 
-class _FetchDateContainerState extends State<FetchDateContainer> {
+class _FetchByDateContainerState extends State<FetchByDateContainer> {
   late final ApodBloc bloc;
 
   @override
@@ -47,19 +47,3 @@ class _FetchDateContainerState extends State<FetchDateContainer> {
     );
   }
 }
-
-
-// FutureBuilder(
-//       future: widget.repository.getTodayApod(),
-//       builder: (context, snapshot) {
-//         if (snapshot.connectionState == ConnectionState.done) {
-//           if (snapshot.hasData) {
-//             return ApodScreen(data: snapshot.data!);
-//           } else {
-//             return Center(child: Text('Dados não disponíveis'));
-//           }
-//         } else {
-//           return const Center(child: CircularProgressIndicator());
-//         }
-//       },
-//     );

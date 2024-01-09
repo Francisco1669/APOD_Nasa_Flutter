@@ -46,7 +46,8 @@ class _ApodScreenState extends State<ApodScreen> {
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(12),
                         image: DecorationImage(
-                          image: NetworkImage(widget.data.url!),
+                          image: NetworkImage(
+                              widget.data.url!), //TODO Tratar o caso do vídeo
                           fit: BoxFit.cover,
                         ),
                       ),
@@ -78,11 +79,17 @@ class _ApodScreenState extends State<ApodScreen> {
                       ),
                       Row(
                         children: [
-                          Text('Actor: ${widget.data.copyright}',
-                              style: TextStyle(
-                                fontSize: 14,
-                                color: Colors.white,
-                              )),
+                          Flexible(
+                            child: Text(
+                                widget.data.copyright == null
+                                    ? 'Unknown actor'
+                                    : 'Actor: ${widget.data.title}',
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  color: Colors.white,
+                                )),
+                          ),
                         ],
                       ),
                       Divider(color: Colors.white),
@@ -108,17 +115,18 @@ class _ApodScreenState extends State<ApodScreen> {
                           )
                         ],
                       ),
-                      SizedBox(
-                        width: width * 0.8,
-                        height: isExpanded ? height : height * 0,
-                        child: Text(
-                          widget.data.explanation ?? 'No explanation available',
+                      if (isExpanded)
+                        Text(
+                          widget.data.explanation ?? '',
+                          maxLines: 20,
+                          overflow: TextOverflow.ellipsis,
                           style: TextStyle(
-                            fontSize: 14,
+                            fontSize: 12,
                             color: Colors.white,
                           ),
-                        ),
-                      ),
+                        )
+                      else
+                        Text(''),
                     ],
                   ),
                 ),

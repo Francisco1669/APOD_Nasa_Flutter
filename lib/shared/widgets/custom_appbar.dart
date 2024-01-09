@@ -2,11 +2,12 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:nasa_api/features/fetchTodayApod/model/apod.dart';
 import 'package:nasa_api/features/fetchTodayApod/model/apod_repository.dart';
+import 'package:nasa_api/features/fetchTodayApod/view/pages/apod_screen.dart';
 
 class CustomAppBar extends StatefulWidget {
   CustomAppBar({super.key, required this.data});
 
-  ApodModel data;
+  final ApodModel data;
 
   @override
   State<CustomAppBar> createState() => _CustomAppBarState();
@@ -55,8 +56,12 @@ class _CustomAppBarState extends State<CustomAppBar> {
                       onSubmitted: (value) async {
                         var newApod = await repository
                             .getApodByDate(_controller.text.toString());
-                        widget.data = newApod;
-                        setState(() {});
+
+                        Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    ApodScreen(data: newApod)));
                       },
                       controller: _controller,
                       keyboardType: TextInputType.datetime,

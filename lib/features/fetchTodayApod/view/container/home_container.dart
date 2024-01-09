@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lottie/lottie.dart';
 import 'package:nasa_api/features/fetchTodayApod/bloc/apod_today_bloc.dart';
 import 'package:nasa_api/features/fetchTodayApod/bloc/apod_today_event.dart';
 import 'package:nasa_api/features/fetchTodayApod/bloc/apod_today_state.dart';
